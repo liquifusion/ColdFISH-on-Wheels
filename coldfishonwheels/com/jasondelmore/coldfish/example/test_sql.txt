@@ -1,0 +1,50 @@
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+go
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Name:               ps_report_commitment_sent
+Created by:          JPG
+Date:               10/18/2005
+
+Purpose: Used to generate NLS Closing website Commitment Sent report
+
+Modification History
+===============================================================================================
+Rev #          Initials          Date               Purpose
+===============================================================================================
+#001          JPG          10/18/2005          Create
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+ALTER PROCEDURE [dbo].[ps_report_commitment_sent]
+@reporting_entity_id     uniqueidentifier,
+@entity_id_customer uniqueidentifier,
+@start_date datetime=NULL,
+@end_date datetime=NULL
+AS 
+
+BEGIN
+SET NOCOUNT ON
+
+DECLARE @colorder varchar(4000)
+
+SET @colorder = 'Order#|loan#|date_ordered|loan_officer|buyer|state|status' -- Order of columns for report
+
+SELECT DISTINCT dbo.f_return_hot_link('ORDER', ob.ORDER_ID, 0, '') AS a_nls_order_num, 
+     ol.loan_number as b_loan_number,
+     ob.datetime_created as c_date_ordered, 
+     RTRIM(ISNULL(voelo.full_name,'No Loan Officer Specified'))as d_loan_officer,
+     @colorder AS _colorder,
+FROM order_basic ob WITH(NOLOCK)
+LEFT OUTER JOIN v_order_entity_simple voelo WITH(NOLOCK) ON ob.order_id = voelo.order_id 
+     AND voelo.u_id_order_entity_type = '66CB46AE-8FEA-493B-991D-313ADFB1E609' --'Loan Officer'
+     AND voelo.sort_order = 1
+     AND voelo.system_status = 1     
+WHERE ob.entity_id_customer = @entity_id_customer
+     AND DATEDIFF(d,@start_date,ob.datetime_created)>=0
+     AND DATEDIFF(d,ob.datetime_created,@end_date)>=0
+     AND ob.entity_id_order_company = @reporting_entity_id
+ORDER BY c_date_ordered, g_status
+ENDset ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+go

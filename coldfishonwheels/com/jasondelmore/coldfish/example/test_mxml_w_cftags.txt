@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication mlns:mx="http://www.adobe.com/2006/mxml" xmlns:cf="coldfusion.service.mxml.*" layout="absolute" viewSourceURL="srcview/index.html">
+
+<cf:Config id="conf" cfServer="127.0.0.1" cfPort="8502" serviceUserName="service" servicePassword="service" /> 
+
+<cf:Document id="doctestnow" action="generate" format="pdf" result="handleResult(event)" fault="handleError(event)" /> 
+
+<mx:Script>
+ <![CDATA[
+  import mx.rpc.events.ResultEvent;
+  
+  public var res:String = new String();
+  
+  private function renderSourceAsPDF():void {
+      var source:String = sourceText.text;
+      if(source.length == 0) return
+      doctestnow.content = source;
+      doctestnow.execute();
+  }        
+  
+  private function handleResult(event:ResultEvent):void { 
+      res=event.result.toString(); 
+      pdfviewer.location=res;    
+  } 
+   
+  private function handleError(event:Event):void { 
+   mx.controls.Alert.show(event.toString()); 
+  } 
+  
+  ]]>
+  </mx:Script>
+
+  
+   <mx:HDividedBox width="100%" height="100%">
+ 
+     <!-- source side -->    
+     <mx:VBox width="50%" height="100%">
+         
+         <mx:Panel title="Source" width="100%" height="100%">    
+             <mx:TextArea sourceText width="100%" height="100%" />
+         </mx:Pane>
+     
+         <mx:HBox HorizontalAlign="right" width="100%">
+             <mx:Button l="Render PDF" click="renderSourceAsPDF()" />
+         </mx:HBox>
+
+      </mx:VBox>
+     
+      <!-- render side -->
+
+      <mx:Panel title="PDF" width="50%" height="100%">
+
+         <mx:HTML id="pdfviewer" width="100%" height="100%"/>
+
+      </mx:Panel
+>
+
+   </mx:HDividedBox>
+
+<mx:HDividedBox width="100%" height="100%">
+ 
+     <!-- source side -->    
+     <mx:VBox width="50%" height="100%">
+         
+         <mx:Panel title="Source" width="100%" height="100%">    
+             <mx:TextArea sourceText width="100%" height="100%" />
+         </mx:Pane>
+     
+         <mx:HBox HorizontalAlign="right" width="100%">
+             <mx:Button l="Render PDF" click="renderSourceAsPDF()" />
+         </mx:HBox>
+
+      </mx:VBox>
+     
+      <!-- render side -->
+
+      <mx:Panel title="PDF" width="50%" height="100%">
+
+         <mx:HTML id="pdfviewer" width="100%" height="100%"/>
+
+      </mx:Panel
+>
+
+   </mx:HDividedBox>
+
+</mx:WindowedApplication>

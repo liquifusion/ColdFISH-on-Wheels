@@ -1,0 +1,28 @@
+import mx.controls.Button;
+import mx.events.FlexEvent;
+
+private var myButton:Button;
+
+private function creationCompleteHandler():void
+
+{
+    // Create a Button instance and set its label 
+    myButton = new Button();
+    myButton.label = "I'm a button!";
+    
+    // Get notified once button component has been created and processed for layout
+
+
+    myButton.addEventListener (FlexEvent.CREATION_COMPLETE, buttonCreationCompleteHandler);
+    
+    // Add the Button instance to the DisplayList
+    addChild (myButton);
+} 
+
+/*private function buttonCreationCompleteHandler ( evt:FlexEvent ):void
+
+{
+    // Center the button 
+    myButton.x = parent.width/2 - myButton.width/2;
+    myButton.y = parent.height/2 - myButton.height/2;
+}*/

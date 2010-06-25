@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style>
+foo {
+	background:#000000;
+}
+</style>
+<script language="javascript">
+	function foo() {
+		return 0;
+	}
+</script>
+</head>
+
+<body>
+<!-- html comment -->
+<cfscript>
+	function foo() {
+		bar = false;	
+		while(bar)
+		{
+			writeoutput("<br/>" & "<br/>");  
+		}
+	}
+	
+	//bar = "";
+	// <cfset test = ""/>
+	baz = "";
+	/*
+	Multiline comment with function() calls in it for fun
+	*/
+</cfscript>
+<!---<cfset one = imageNew("", 100, 100, "rgb", "red") />--->
+<cfdump var="test"/>
+
+<cfquery datasource="foo" name="test">
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+go
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Name:               ps_report_commitment_sent
+Created by:          JPG
+Date:               10/18/2005
+
+Purpose: Used to generate NLS Closing website Commitment Sent report
+
+Modification History
+===============================================================================================
+Rev #          Initials          Date               Purpose
+===============================================================================================
+#001          JPG          10/18/2005          Create
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+ALTER PROCEDURE [dbo].[ps_report_commitment_sent]
+@reporting_entity_id     uniqueidentifier,
+@entity_id_customer uniqueidentifier,
+@start_date datetime=NULL,
+@end_date datetime=NULL
+AS 
+
+BEGIN
+SET NOCOUNT ON
+
+DECLARE @colorder varchar(4000)
+
+SET @colorder = 'Order#|loan#|date_ordered|loan_officer|buyer|state|status' -- Order of columns for report
+
+SELECT DISTINCT dbo.f_return_hot_link('ORDER', ob.ORDER_ID, 0, '') AS a_nls_order_num, 
+     ol.loan_number as b_loan_number,
+     ob.datetime_created as c_date_ordered, 
+     RTRIM(ISNULL(voelo.full_name,'No Loan Officer Specified'))as d_loan_officer,
+     @colorder AS _colorder,
+FROM order_basic ob WITH(NOLOCK)
+LEFT OUTER JOIN v_order_entity_simple voelo WITH(NOLOCK) ON ob.order_id = voelo.order_id 
+     AND voelo.u_id_order_entity_type = '66CB46AE-8FEA-493B-991D-313ADFB1E609' --'Loan Officer'
+     AND voelo.sort_order = 1
+     AND voelo.system_status = 1     
+WHERE ob.entity_id_customer = @entity_id_customer
+     AND DATEDIFF(d,@start_date,ob.datetime_created)>=0
+     AND DATEDIFF(d,ob.datetime_created,@end_date)>=0
+	 AND DATEDIFF(d,ob.datetime_created,@end_date)<=100
+     AND ob.entity_id_order_company = @reporting_entity_id
+ORDER BY c_date_ordered, g_status
+ENDset ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+go
+</cfquery>
+<form name="input" action="html_form_action.cfm"
+method="get">
+Username: 
+<input type="text" name="user">
+<input type="submit" value="Submit">
+<textarea name="test"></textarea>
+</form> 
+
+<cfset one = imageRead("foo.jp")/><cfset test = ""/>
+<cfsetting enablecfoutputonly="no"/>
+<cfoutput>
+<img src="foo.jpg" alt="Embedded Image" />
+</cfoutput>
+<cfdump var="#one#"/>
+<cfabort/>
+
+<table>
+<thead>
+<td><ul></ul>
+</td>
+</thead>
+
+<tr id='row1'>
+<td><img/>
+</td>
+</tr>
+<tfoot>
+<td>
+</td></tfoot>
+</table>
+
+</body>
+</html>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+    xmlns:mx="http://www.adobe.com/2006/mxml" 
+    viewSourceURL="src/GettingStartedActionScript/index.html"
+
+    creationComplete="creationCompleteHandler();"
+    width="300" height="80"
+ >
+
+    <mx:Script>
+
+        <![CDATA[
+            import mx.controls.Button;
+            import mx.events.FlexEvent;
+
+            private var myButton:Button;
+
+            private function creationCompleteHandler():void
+
+            {
+                // Create a Button instance and set its label 
+                myButton = new Button();
+                myButton.label = "I'm a button!";
+                
+                // Get notified once button component has been created and processed for layout
+
+
+                myButton.addEventListener (FlexEvent.CREATION_COMPLETE, buttonCreationCompleteHandler);
+                
+                // Add the Button instance to the DisplayList
+                addChild (myButton);
+            } 
+            
+            /*private function buttonCreationCompleteHandler ( evt:FlexEvent ):void
+
+            {
+                // Center the button 
+                myButton.x = parent.width/2 - myButton.width/2;
+                myButton.y = parent.height/2 - myButton.height/2;
+            }*/
+
+        ]]>
+    </mx:Script>
+</mx:Application>
