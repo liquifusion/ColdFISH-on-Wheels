@@ -25,7 +25,7 @@
 		<cfset var loc = {}>
 		
 		<!--- ColdFISH setup --->
-		<cfset loc.coldFish = CreateObject('component', 'com.jasondelmore.coldfish.coldfish').init(ExpandPath("/config/coldfishconfig.xml"))>
+		<cfset loc.coldFish = CreateObject('component', 'com.jasondelmore.coldfish.coldfish').init(ExpandPath(application.coldFishOnWheels.targetConfigFile))>
 		<cfset loc.coldfish.setStyle('CFCOMMENT', 'color:##676767; background-color: ##fff;')>
 		
 		<!--- Formatted string --->
