@@ -2,7 +2,7 @@
 
 	<!--- Set default values in application scope --->
 	<cfset $setDefaultColdFishValues()>
-	<cfset $copyColdFishConfigFile()>
+	<cfset $copyColdFishConfigFile(application.coldFishOnWheels.sourceConfigFile, application.coldFishOnWheels.targetConfigFile)>
 	
 	<!----------------------------------------------------->
 	<!--- Public --->
@@ -44,10 +44,13 @@
 	<!--- Private --->
 	
 	<cffunction name="$copyColdFishConfigFile" hint="If coldfishconfig.xml is not copied to the Wheels `config` folder, this method copies it there.">
+		<cfargument name="sourceConfigFile" type="string" hint="Location of source config file.">
+		<cfargument name="targetConfigFile" type="string" hint="Location of target config file.">
 		
 		<cfset var loc = {}>
-		<cfset loc.sourceFile = ExpandPath("/plugins/coldfishonwheels/com/jasondelmore/coldfish/coldfishconfig.xml")>
-		<cfset loc.destinationFile = ExpandPath("/config/coldfishconfig.xml")>
+		
+		<cfset loc.sourceFile = ExpandPath(arguments.sourceConfigFile)>
+		<cfset loc.destinationFile = ExpandPath(arguments.targetConfigFile)>
 		
 		<cfif not FileExists(loc.destinationFile)>
 			<cffile
@@ -91,7 +94,9 @@
 	<!----------------------------------------------------->
 	
 	<cffunction name="$setDefaultColdFishValues" access="private" hint="Sets default values in `application` scope if they don't already exist.">
-	
+		
+		<cfparam name="application.coldFishOnWheels.sourceConfigFile" type="string" default="./plugins/coldfishonwheels/com/jasondelmore/coldfish/coldfishconfig.xml">
+		<cfparam name="application.coldFishOnWheels.targetConfigFile" type="string" default="./config/coldfishconfig.xml">
 		<cfparam name="application.coldFishOnWheels.wrapperElement" type="string" default="code">
 		<cfparam name="application.coldFishOnWheels.wrapperClass" type="string" default="block">
 	
