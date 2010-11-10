@@ -80,7 +80,7 @@
 			</cfif>
 			<cfset loc.prepend &= '>'>
 			<!--- Append --->
-			<cfset loc.append = '</#arguments.wrapperElement#'>
+			<cfset loc.append = '</#arguments.wrapperElement#>'>
 		<!--- Not wrapping with an element --->
 		<cfelse>
 			<cfset loc.prepend = "">
