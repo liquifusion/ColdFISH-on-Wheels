@@ -31,10 +31,10 @@
 		<!--- Formatted string --->
 		<cfif Len(arguments.code) gt 0>
 			<cfset arguments.code = Trim(arguments.code)>
-			<cfreturn $wrapColdFishCode(loc.coldFish.formatString(arguments.code))>
+			<cfreturn $wrapColdFishCode(loc.coldFish.formatString(arguments.code), arguments.wrapperElement, arguments.wrapperClass)>
 		<!--- Formatted file --->
 		<cfelseif Len(arguments.filePath) gt 0>
-			<cfreturn $wrapColdFishCode(loc.coldFish.formatFile(arguments.filePath))>
+			<cfreturn $wrapColdFishCode(loc.coldFish.formatFile(arguments.filePath), arguments.wrapperElement, arguments.wrapperClass)>
 		</cfif>
 	
 	</cffunction>

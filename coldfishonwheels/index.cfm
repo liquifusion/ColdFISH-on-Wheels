@@ -4,7 +4,7 @@
 
 <cfoutput>
 
-<h1>ColdFISH on Wheels v0.6</h1>
+<h1>ColdFISH on Wheels v0.7</h1>
 <p>
 	A simple wrapper for Jason Delmore's <a href="http://coldfish.riaforge.org/">ColdFISH</a> syntax highlighter.
 </p>
